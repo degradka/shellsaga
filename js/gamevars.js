@@ -1,0 +1,15 @@
+var welcomeLetter = [
+    'Welcome! If you are new to the game, here are some tips: ',
+    "<br>",
+    'Look at your surroundings with the command "<span class="command">ls</span>"',
+    'Move to a new location with the command "<span class="command">cd LOCATION</span>"',
+    'You can backtrack with the command "<span class="command">cd ..</span>"',
+    'Interact with things in the world with the command "<span class="command">less ITEM</span>"',
+    "<br>",
+    'If you forget where you are, type "<span class="command">pwd</span>"',
+    "<br>",
+    'Want to take a break? Exit with the command "<span class="command">endgame</span>"',
+    "<br>",
+    'Go ahead, explore. We hope you enjoy what you find. Do <span class="command">ls</span> as your first command',
+    "<br>",
+];
