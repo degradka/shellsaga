@@ -188,6 +188,8 @@ function getParentLocation(location) {
     return null;
 }
 
+// I understand that this implementation will haunt me in my nightmares
+
 function autocompleteLocations(prefix) {
     var allLocations = locations[gameState.location].locations;
     return allLocations.filter(location => location.startsWith(prefix));
@@ -209,7 +211,7 @@ function handleGameCommandAutocompletion() {
 
     if (currentCommand !== '') {
         var gameCommand = Object.values(GAME_COMMANDS).find(cmd => cmd.command === currentCommand);
-        
+
         if (gameCommand) {
             var args = input.split(' ').slice(1);
             
