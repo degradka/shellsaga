@@ -4,12 +4,36 @@ var gameState = {
 };
 
 const GAME_COMMANDS = {
-    LESS: 'less',
-    PWD: 'pwd',
-    LS: 'ls',
-    CD: 'cd',
-    END_GAME: 'endgame',
-    CLEAR: 'clear',
+    LESS: {
+        command: 'less',
+        args: 1,
+        autocomplete: autocompleteItems,
+    },
+    PWD: {
+        command: 'pwd',
+        args: 0,
+        autocomplete: null,
+    },
+    LS: {
+        command: 'ls',
+        args: 0,
+        autocomplete: null,
+    },
+    CD: {
+        command: 'cd',
+        args: 1,
+        autocomplete: autocompleteLocations,
+    },
+    END_GAME: {
+        command: 'endgame',
+        args: 0,
+        autocomplete: null,
+    },
+    CLEAR: {
+        command: 'clear',
+        args: 0,
+        autocomplete: null,
+    },
 };
 
 var locations = {
@@ -66,7 +90,7 @@ function handleGameCommand(cmdArray) {
     var cmd = cmdArray[0].toLowerCase();
 
     switch (cmd) {
-        case GAME_COMMANDS.LESS:
+        case GAME_COMMANDS.LESS.command:
             if (cmdArray.length < 2) {
                 addLine("<span class=\"inherit\">Pick a different item to less.</span>", "error", 100);
             } else {
@@ -78,13 +102,13 @@ function handleGameCommand(cmdArray) {
                 }
             }
             break;
-        case GAME_COMMANDS.PWD:
+        case GAME_COMMANDS.PWD.command:
             addLine("You are in " + gameState.location + ".", "color2", 100);
             break;
-        case GAME_COMMANDS.LS:
+        case GAME_COMMANDS.LS.command:
             ls();
             break;
-        case GAME_COMMANDS.CD:
+        case GAME_COMMANDS.CD.command:
             if (cmdArray.length < 2) {
                 gameState.location = "Home";
                 addLine("You have come Home!", "color2", 100);
@@ -98,10 +122,10 @@ function handleGameCommand(cmdArray) {
                 }
             }
             break;
-        case GAME_COMMANDS.END_GAME:
+        case GAME_COMMANDS.END_GAME.command:
             endGame();
             break;
-        case GAME_COMMANDS.CLEAR:
+        case GAME_COMMANDS.CLEAR.command:
             clearTerminal();
             break;
         default:
@@ -162,4 +186,43 @@ function getParentLocation(location) {
         }
     }
     return null;
+}
+
+function autocompleteLocations(prefix) {
+    var allLocations = locations[gameState.location].locations;
+    return allLocations.filter(location => location.startsWith(prefix));
+}
+
+function autocompleteItems(prefix) {
+    var allItems = locations[gameState.location].items;
+    return allItems.filter(item => item.startsWith(prefix));
+}
+
+function findMatchingGameCommand(prefix) {
+    var availableCommands = Object.values(GAME_COMMANDS).map(cmd => cmd.command);
+    return availableCommands.filter(command => command.startsWith(prefix));
+}
+
+function handleGameCommandAutocompletion() {
+    var input = textarea.value.trim();
+    var currentCommand = input.split(' ')[0];
+
+    if (currentCommand !== '') {
+        var gameCommand = Object.values(GAME_COMMANDS).find(cmd => cmd.command === currentCommand);
+        
+        if (gameCommand) {
+            var args = input.split(' ').slice(1);
+            
+            if (gameCommand.autocomplete && args.length <= gameCommand.args) {
+                var suggestions = gameCommand.autocomplete(args[args.length - 1]);
+
+                if (suggestions.length === 1) {
+                    var autocompletedArg = suggestions[0];
+                    args[args.length - 1] = autocompletedArg;
+                    var autocompletedCommand = gameCommand.command + ' ' + args.join(' ');
+                    textarea.value = autocompletedCommand;
+                }
+            }
+        }
+    }
 }

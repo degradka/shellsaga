@@ -68,7 +68,7 @@ textarea.addEventListener('keydown', function (event) {
         event.preventDefault();
         if (gameState.playing !== true) {
             var currentCommand = textarea.value.trim();
-            
+
             if (currentCommand !== '') {
                 var matchingCommand = findMatchingCommand(currentCommand);
     
@@ -76,6 +76,8 @@ textarea.addEventListener('keydown', function (event) {
                     textarea.value = matchingCommand;
                 }
             }
+        } else {
+            handleGameCommandAutocompletion();
         }
     }
 });
