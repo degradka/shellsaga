@@ -4,6 +4,18 @@ var command = document.getElementById("typer");
 var textarea = document.getElementById("texter");
 var terminal = document.getElementById("terminal");
 
+const COMMANDS = {
+    WHOIS: 'whois',
+    WHOAMI: 'whoami',
+    SOCIAL: 'social',
+    HISTORY: 'history',
+    HELP: 'help',
+    EMAIL: 'email',
+    CLEAR: 'clear',
+    BANNER: 'banner',
+    GAME: 'game',
+};
+
 var git = 0;
 var pw = false;
 let pwd = false;
@@ -49,6 +61,52 @@ function enterKey(e) {
         }
             command.innerHTML = textarea.value;
     }
+}
+
+textarea.addEventListener('keydown', function (event) {
+    if (event.key === 'Tab') {
+        event.preventDefault();
+        if (gameState.playing !== true) {
+            var currentCommand = textarea.value.trim();
+            
+            if (currentCommand !== '') {
+                var matchingCommand = findMatchingCommand(currentCommand);
+    
+                if (matchingCommand !== null) {
+                    textarea.value = matchingCommand;
+                }
+            }
+        }
+    }
+});
+
+function findMatchingCommand(prefix) {
+    var availableCommands = gameState.playing ? Object.values(GAME_COMMANDS) : Object.values(COMMANDS);
+
+    var matchingCommands = availableCommands.filter(function (command) {
+        return command.startsWith(prefix);
+    });
+
+    if (matchingCommands.length === 1) {
+        return matchingCommands[0];
+    }
+
+    return null;
+}
+
+function findCommonPrefix(strings) {
+    if (strings.length === 0) {
+        return '';
+    }
+
+    var sortedStrings = strings.slice().sort();
+    var firstString = sortedStrings[0];
+    var lastString = sortedStrings[sortedStrings.length - 1]
+    var i = 0;
+    while (i < firstString.length && firstString.charAt(i) === lastString.charAt(i)) {
+        i++;
+    }
+    return firstString.slice(0, i);
 }
 
 function clearTerminal() {
