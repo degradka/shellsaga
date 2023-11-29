@@ -3,6 +3,15 @@ var gameState = {
     location: "Home"
 };
 
+const COMMANDS = {
+    LESS: 'less',
+    PWD: 'pwd',
+    LS: 'ls',
+    CD: 'cd',
+    END_GAME: 'endgame',
+    CLEAR: 'clear',
+};
+
 var locations = {
     Home: {
         name: "Home",
@@ -57,7 +66,7 @@ function handleGameCommand(cmdArray) {
     var cmd = cmdArray[0].toLowerCase();
 
     switch (cmd) {
-        case "less":
+        case COMMANDS.LESS:
             if (cmdArray.length < 2) {
                 addLine("<span class=\"inherit\">Pick a different item to less.</span>", "error", 100);
             } else {
@@ -69,13 +78,13 @@ function handleGameCommand(cmdArray) {
                 }
             }
             break;
-        case "pwd":
+        case COMMANDS.PWD:
             addLine("You are in " + gameState.location + ".", "color2", 100);
             break;
-        case "ls":
+        case COMMANDS.LS:
             ls();
             break;
-        case "cd":
+        case COMMANDS.CD:
             if (cmdArray.length < 2) {
                 gameState.location = "Home";
                 addLine("You have come Home!", "color2", 100);
@@ -89,10 +98,10 @@ function handleGameCommand(cmdArray) {
                 }
             }
             break;
-        case "endgame":
+        case COMMANDS.END_GAME:
             endGame();
             break;
-        case "clear":
+        case COMMANDS.CLEAR:
             clearTerminal();
             break;
         default:
