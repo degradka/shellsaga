@@ -4,18 +4,18 @@ body {
     min-height: 99%;
     width: 100%;
     min-width: 550px;
-    color: #519975;
-    background: #211D1B;
+    color: #F0DFAF;
+    background: #1E1E1E;
     font-family: cursor, monospace;
     overflow-x: hidden;
 }
 ::selection {
     color: #211830;
-    background-color: #519975;
+    background-color: #F0DFAF;
 }
 ::-moz-selection {
     color: #211830;
-    background-color: #519975;
+    background-color: #F0DFAF;
 }
 textarea {
     left: -1000px;
@@ -60,8 +60,8 @@ b {
     opacity: 0;
 }
 #liner::before {
-    color: #519975;
-    content: "guest@degradka.dev:~$";
+    color: #F0DFAF;
+    content: "player@degradka.dev:~$";
 }
 @keyframes show {
     from {
@@ -97,24 +97,24 @@ p {
     }
 }
 .index {
-    color: #DCDCCC;
+    color: #8CD0D3;
 }
 .color2 {
-    color: #B89076;
+    color: #DFAF8F;
 }
 .command {
-    color: #73ABAD;
+    color: #F0DFAF;
     text-shadow: 0 0 5px #73ABAD; 
 }
 .error {
-    color: #B89076;
+    color: #DFAF8F;
 }
 .white {
     color: #fff;
 }
 .inherit,
 a {
-    color: #9C8394;
+    color: #B8B8B8;
 }
 a {
     text-decoration: inherit;

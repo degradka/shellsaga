@@ -4,27 +4,31 @@ var command = document.getElementById("typer");
 var textarea = document.getElementById("texter");
 var terminal = document.getElementById("terminal");
 
-const COMMANDS = {
-    WHOIS: 'whois',
-    WHOAMI: 'whoami',
-    SOCIAL: 'social',
-    HISTORY: 'history',
-    HELP: 'help',
-    EMAIL: 'email',
-    CLEAR: 'clear',
-    BANNER: 'banner',
-    GAME: 'game',
-};
+var currentLanguage = "en";
+var languageVars = gamevars_en;
 
 var git = 0;
 var pw = false;
 let pwd = false;
 var commands = [];
 
+function switchLanguage(newLanguage) {
+    currentLanguage = newLanguage;
+    if (currentLanguage === "en") {
+        languageVars = gamevars_en;
+    } else if (currentLanguage === "ru") {
+        languageVars = gamevars_ru;
+    }
+}
+
 setTimeout(function() {
-    loopLines(banner, "", 80);
+    loopLines(languageVars.banner, "", 80);
     textarea.focus();
 }, 100);
+
+setTimeout(function() {
+    interactWithItem("WelcomeLetter");
+}, 1300)
 
 window.addEventListener("keyup", enterKey);
 
@@ -42,7 +46,7 @@ function enterKey(e) {
         var cmdArray = command.innerHTML.split(' ');
 
         git = commands.length;
-        addLine("guest@degradka.dev:~$ " + command.innerHTML, "no-animation", 0);
+        addLine("player@degradka.dev:~$ " + command.innerHTML, "no-animation", 0);
         commander(cmdArray)
         command.innerHTML = "";
         textarea.value = "";
@@ -66,24 +70,12 @@ function enterKey(e) {
 textarea.addEventListener('keydown', function (event) {
     if (event.key === 'Tab') {
         event.preventDefault();
-        if (gameState.playing !== true) {
-            var currentCommand = textarea.value.trim();
-
-            if (currentCommand !== '') {
-                var matchingCommand = findMatchingCommand(currentCommand);
-    
-                if (matchingCommand !== null) {
-                    textarea.value = matchingCommand;
-                }
-            }
-        } else {
-            handleGameCommandAutocompletion();
-        }
+        handleGameCommandAutocompletion();
     }
 });
 
 function findMatchingCommand(prefix) {
-    var availableCommands = gameState.playing ? Object.values(GAME_COMMANDS) : Object.values(COMMANDS);
+    var availableCommands = Object.values(GAME_COMMANDS);
 
     var matchingCommands = availableCommands.filter(function (command) {
         return command.startsWith(prefix);
@@ -119,59 +111,7 @@ function clearTerminal() {
 }
 
 function commander(cmdArray) {
-    var cmd = cmdArray[0].toLowerCase();
-    if (gameState.playing == false) {
-        switch (cmd) {
-            case "help":
-                loopLines(help, "color2 margin", 80);
-                break;
-            case "whois":
-                loopLines(whois, "color2 margin", 80);
-                break;
-            case "whoami":
-                loopLines(whoami, "color2 margin", 80);
-                break;
-            case "sudo":
-                addLine("Oh no, what have you done...", "color2", 80);
-                setTimeout(function() {
-                    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-                }, 1000);
-                break;
-            case "social":
-                loopLines(social, "color2 margin", 80);
-                break;
-            case "projects":
-                loopLines(projects, "color2 margin", 80);
-                break;
-            case "history":
-                addLine("<br>", "", 0);
-                loopLines(commands, "color2", 80);
-                addLine("<br>", "command", 80 * commands.length + 50);
-                break;
-            case "email":
-                addLine('Opening mailto:<a href="mailto:degradka@gmail.com">degradka@gmail.com</a>...', "color2", 80);
-                newTab(email);
-                break;
-            case "clear":
-                clearTerminal();
-                break;
-            case "banner":
-                loopLines(banner, "", 80);
-                break;
-            case "github":
-                addLine("Opening GitHub...", "color2", 0);
-                newTab(github);
-                break;
-            case "game":
-                startGame();
-                break;
-            default:
-                addLine("<span class=\"inherit\">Command not found. For a list of commands, type <span class=\"command\">'help'</span>.</span>", "error", 100);
-                break;
-        }
-    } else {
-        handleGameCommand(cmdArray);
-    }
+    handleGameCommand(cmdArray);
 }
 
 function newTab(link) {

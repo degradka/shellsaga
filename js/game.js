@@ -1,8 +1,7 @@
 var gameState = {
-    playing: false,
     location: "Home"
 };
-
+// TODO: Make so if user types gibberish, pass it as a command and output default string
 const GAME_COMMANDS = {
     LESS: {
         command: 'less',
@@ -24,11 +23,6 @@ const GAME_COMMANDS = {
         args: 1,
         autocomplete: autocompleteLocations,
     },
-    END_GAME: {
-        command: 'endgame',
-        args: 0,
-        autocomplete: null,
-    },
     CLEAR: {
         command: 'clear',
         args: 0,
@@ -38,20 +32,17 @@ const GAME_COMMANDS = {
 
 var locations = {
     Home: {
-        name: "Home",
-        moveMessage: "You have moved to Home. You are in the comfort of your own home.",
+        moveMessage: languageVars.homeMoveMessage,
         locations: ["WesternForest", "NorthernMeadow"],
         items: ["WelcomeLetter"],
     },
     WesternForest: {
-        name: "Western Forest",
-        moveMessage: "You step into the mysterious Western Forest.",
+        moveMessage: languageVars.westernForestMoveMessage,
         locations: [],
         items: [],
     },
     NorthernMeadow: {
-        name: "Northern Meadow",
-        moveMessage: "The serene Northern Meadow welcomes you.",
+        moveMessage: languageVars.northernMeadowMoveMessage,
         locations: [],
         items: [],
     },
@@ -60,30 +51,13 @@ var locations = {
 function interactWithItem(itemName) {
     switch (itemName) {
         case "WelcomeLetter":
-            loopLines(welcomeLetter, "color2", 80);
+            loopLines(languageVars.welcomeLetter, "color2", 80);
             break;
-        // Add more cases for other items
         default:
-            addLine("Nothing interesting happens.", "color2", 0);
+            addLine(languageVars.nothingInterestingString, "color2", 0);
             break;
     }
-}
-
-function startGame() {
-    gameState.playing = true;
-    clearTerminal();
-    setTimeout(function() {
-        interactWithItem("WelcomeLetter");
-    }, 100);
-    
-}
-
-function endGame() {
-    gameState.playing = false;
-    clearTerminal();
-    setTimeout(function() {
-        loopLines(banner, "", 80);
-    }, 100);
+    textarea.focus();
 }
 
 function handleGameCommand(cmdArray) {
@@ -92,18 +66,18 @@ function handleGameCommand(cmdArray) {
     switch (cmd) {
         case GAME_COMMANDS.LESS.command:
             if (cmdArray.length < 2) {
-                addLine("<span class=\"inherit\">Pick a different item to less.</span>", "error", 100);
+                addLine("<span class=\"inherit\">" + languageVars.noLessString + "</span>", "error", 100);
             } else {
                 var itemName = cmdArray[1];
                 if (locations[gameState.location].items.includes(itemName)) {
                     interactWithItem(itemName);
                 } else {
-                    addLine("<span class=\"inherit\">There is no " + itemName + " here.</span>", "error", 100);
+                    addLine("<span class=\"inherit\">" + languageVars.noItemString + itemName + languageVars.hereString + ".</span>", "error", 100);
                 }
             }
             break;
         case GAME_COMMANDS.PWD.command:
-            addLine("You are in " + gameState.location + ".", "color2", 100);
+            addLine(languageVars.whereString + gameState.location + ".", "color2", 100);
             break;
         case GAME_COMMANDS.LS.command:
             ls();
@@ -111,7 +85,7 @@ function handleGameCommand(cmdArray) {
         case GAME_COMMANDS.CD.command:
             if (cmdArray.length < 2) {
                 gameState.location = "Home";
-                addLine("You have come Home!", "color2", 100);
+                addLine(languageVars.rootString, "color2", 100);
             } else {
                 if (cmdArray[1] == "..") {
                     cdUp();
@@ -129,7 +103,7 @@ function handleGameCommand(cmdArray) {
             clearTerminal();
             break;
         default:
-            addLine("<span class=\"inherit\">Command '<span class=\"command\">" + cmd + "</span>' not found.</span>", "error", 100);
+            addLine("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);
             break;
     }
 }
@@ -143,7 +117,7 @@ function ls() {
     var locationsList = locations[gameState.location].locations;
     var itemsList = locations[gameState.location].items;
 
-    addLine("&nbsp;" + "Locations:", "color2", 100);
+    addLine("&nbsp;" + languageVars.locationsString, "color2", 100);
     if (locationsList.length > 0) {
         for (var i = 0; i < locationsList.length; i++) {
             addLine(locationsList[i], "color2", 100 * (i + 1));
@@ -152,7 +126,7 @@ function ls() {
         addLine("<br>", "", 100);
     }
 
-    addLine("&nbsp;" + "Items:", "color2", 100 * (locationsList.length + 1));
+    addLine("&nbsp;" + languageVars.itemsString, "color2", 100 * (locationsList.length + 1));
     if (itemsList.length > 0) {
         for (var j = 0; j < itemsList.length; j++) {
             addLine(itemsList[j], "color2", 100 * (locationsList.length + j + 2));
@@ -166,7 +140,7 @@ function cd(newLocation) {
     if (locations[gameState.location].locations.includes(newLocation)) {
         changeLocation(newLocation);
     } else {
-        addLine("<span class=\"inherit\">There is no place called " + newLocation + ".</span>", "error", 100);
+        addLine("<span class=\"inherit\">" + languageVars.noLocationString + newLocation + ".</span>", "error", 100);
     }
 }
 
@@ -175,7 +149,7 @@ function cdUp() {
         var parentLocation = getParentLocation(gameState.location);
         changeLocation(parentLocation, true);
     } else {
-        addLine("You are at the first room. ", "color2", 100);
+        addLine(languageVars.firstRoomString, "color2", 100);
     }
 }
 
