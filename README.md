@@ -22,7 +22,7 @@ ShellSaga is an interactive text adventure platform designed to teach IT enthusi
 
 ## Ready to Roll?
 
-1. Open [ShellSaga](https://yourusername.github.io/shellsaga/) in your favorite web browser.
+1. Open [ShellSaga](https://degradka.github.io/shellsaga/) in your favorite web browser.
 2. Enjoy!
 
 ## Contributing
