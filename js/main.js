@@ -21,8 +21,6 @@ function switchLanguage(newLanguage) {
     }
 }
 
-switchLanguage("ru");
-
 setTimeout(function() {
     loopLines(languageVars.banner, "", 80);
     textarea.focus();
