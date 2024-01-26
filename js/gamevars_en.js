@@ -39,4 +39,6 @@ var gamevars_en = {
     hereString: " here",
     noLessString: "Pick a different item to less.",
     nothingInterestingString: "Nothing interesting happens.",
+    signInteractMessage: "Spell Casting Academy: The Elite School of Magic Today Only: Free Introductory Lessons! Novices welcome!",
+    backSignInteractMessage: "If you ever want to go directly Home, just type 'cd ~' or just plain old `cd' and you'll come back Home. Getting back might be more difficult though.",
 };

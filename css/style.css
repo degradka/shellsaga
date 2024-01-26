@@ -77,7 +77,7 @@ p {
     line-height: 1.3em;
     margin: 0;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: break-spaces;
     margin: 0;
     letter-spacing: 0.05em;
     animation: typing 0.5s steps(30, end);

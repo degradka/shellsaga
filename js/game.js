@@ -39,7 +39,7 @@ var locations = {
     WesternForest: {
         moveMessage: languageVars.westernForestMoveMessage,
         locations: [],
-        items: [],
+        items: ["Sign", "BackSign"],
     },
     NorthernMeadow: {
         moveMessage: languageVars.northernMeadowMoveMessage,
@@ -52,11 +52,21 @@ var items = {
     WelcomeLetter: {
         interactMessage: languageVars.welcomeLetter,
     },
+    Sign: {
+        interactMessage: languageVars.signInteractMessage,
+    },
+    BackSign: {
+        interactMessage: languageVars.backSignInteractMessage,
+    },
 }
 
 function interactWithItem(itemName) {
     if (locations[gameState.location].items.includes(itemName)) {
-        loopLines(items[itemName].interactMessage, "color2", 80);
+        if (Array.isArray(items[itemName].interactMessage)) {
+            loopLines(items[itemName].interactMessage, "color2", 80);
+        } else {
+            addLine(items[itemName].interactMessage, "color2", 80);
+        }
     } else {
         addLine(languageVars.nothingInterestingString, "color2", 0);
     }
@@ -94,6 +104,9 @@ function handleGameCommand(cmdArray) {
                     cdUp();
                 } else if (cmdArray[1] == ".") {
                     addLine(locations[gameState.location].moveMessage, "color2", 100);
+                } else if (cmdArray[1] == "~") {
+                    gameState.location = "Home";
+                    addLine(languageVars.rootString, "color2", 100);
                 } else {
                     cd(cmdArray[1]);
                 }
