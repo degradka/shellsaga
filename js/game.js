@@ -48,14 +48,17 @@ var locations = {
     },
 }
 
+var items = {
+    WelcomeLetter: {
+        interactMessage: languageVars.welcomeLetter,
+    },
+}
+
 function interactWithItem(itemName) {
-    switch (itemName) {
-        case "WelcomeLetter":
-            loopLines(languageVars.welcomeLetter, "color2", 80);
-            break;
-        default:
-            addLine(languageVars.nothingInterestingString, "color2", 0);
-            break;
+    if (locations[gameState.location].items.includes(itemName)) {
+        loopLines(items[itemName].interactMessage, "color2", 80);
+    } else {
+        addLine(languageVars.nothingInterestingString, "color2", 0);
     }
     textarea.focus();
 }
