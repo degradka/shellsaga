@@ -150,3 +150,11 @@ function loopLines(name, style, time) {
         addLine(item, style, index * time);
     });
 }
+
+function displayMessage(message, style, time) {
+    if (Array.isArray(message)) {
+        loopLines(message, style, time);
+    } else {
+        addLine(message, style, time);
+    }
+}

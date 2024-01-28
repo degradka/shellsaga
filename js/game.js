@@ -108,13 +108,9 @@ var items = {
 
 function interactWithItem(itemName) {
     if (locations[gameState.location].items.includes(itemName)) {
-        if (Array.isArray(items[itemName].interactMessage)) {
-            loopLines(items[itemName].interactMessage, "color2", 80);
-        } else {
-            addLine(items[itemName].interactMessage, "color2", 80);
-        }
+        displayMessage(items[itemName].interactMessage, "color2", 80);
     } else {
-        addLine(languageVars.nothingInterestingString, "color2", 0);
+        displayMessage(languageVars.nothingInterestingString, "color2", 0);
     }
     textarea.focus();
 }
@@ -129,18 +125,18 @@ function handleGameCommand(cmdArray) {
     switch (cmd) {
         case GAME_COMMANDS.LESS.command:
             if (cmdArray.length < 2) {
-                addLine("<span class=\"inherit\">" + languageVars.noLessString + "</span>", "error", 100);
+                displayMessage("<span class=\"inherit\">" + languageVars.noLessString + "</span>", "error", 100);
             } else {
                 var itemName = cmdArray[1];
                 if (locations[gameState.location].items.includes(itemName)) {
                     interactWithItem(itemName);
                 } else {
-                    addLine("<span class=\"inherit\">" + languageVars.noItemString + itemName + languageVars.hereString + ".</span>", "error", 100);
+                    displayMessage("<span class=\"inherit\">" + languageVars.noItemString + itemName + languageVars.hereString + ".</span>", "error", 100);
                 }
             }
             break;
         case GAME_COMMANDS.PWD.command:
-            addLine(languageVars.whereString + gameState.location + ".", "color2", 100);
+            displayMessage(languageVars.whereString + gameState.location + ".", "color2", 100);
             break;
         case GAME_COMMANDS.LS.command:
             ls();
@@ -148,61 +144,62 @@ function handleGameCommand(cmdArray) {
         case GAME_COMMANDS.CD.command:
             if (cmdArray.length < 2) {
                 gameState.location = "Home";
-                addLine(languageVars.rootString, "color2", 100);
+                displayMessage(languageVars.rootString, "color2", 100);
             } else {
                 if (cmdArray[1] == "..") {
                     cdUp();
                 } else if (cmdArray[1] == ".") {
-                    addLine(locations[gameState.location].moveMessage, "color2", 100);
+                    displayMessage(locations[gameState.location].moveMessage, "color2", 100);
                 } else if (cmdArray[1] == "~") {
                     gameState.location = "Home";
-                    addLine(languageVars.rootString, "color2", 100);
+                    displayMessage(languageVars.rootString, "color2", 100);
                 } else {
                     cd(cmdArray[1]);
                 }
             }
             break;
-        case GAME_COMMANDS.END_GAME.command:
-            endGame();
-            break;
         case GAME_COMMANDS.CLEAR.command:
             clearTerminal();
             break;
         default:
-            addLine("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);
+            displayMessage("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);
             break;
     }
 }
 
 function changeLocation(newLocation) {
-    if (newLocation != "Box") {
-        gameState.location = newLocation;
-        addLine(locations[newLocation].moveMessage, "color2", 100);
+    if (isBox(newLocation)) {
+        displayMessage(languageVars.youreTooBig, "color2", 100);
     } else {
-        addLine(languageVars.youreTooBig, "color2", 100);
+        gameState.location = newLocation;
+        displayMessage(locations[newLocation].moveMessage, "color2", 100);
     }
+}
+
+function isBox(locationName) {
+    return locationName.toLowerCase().includes("box");
 }
 
 function ls() {
     var locationsList = locations[gameState.location].locations;
     var itemsList = locations[gameState.location].items;
 
-    addLine("&nbsp;" + languageVars.locationsString, "color2", 100);
+    displayMessage("&nbsp;" + languageVars.locationsString, "color2", 100);
     if (locationsList.length > 0) {
         for (var i = 0; i < locationsList.length; i++) {
-            addLine(locationsList[i], "color2", 100 * (i + 1));
+            displayMessage(locationsList[i], "color2", 100 * (i + 1));
         }
     } else {
-        addLine("<br>", "", 100);
+        displayMessage("<br>", "", 100);
     }
 
-    addLine("&nbsp;" + languageVars.itemsString, "color2", 100 * (locationsList.length + 1));
+    displayMessage("&nbsp;" + languageVars.itemsString, "color2", 100 * (locationsList.length + 1));
     if (itemsList.length > 0) {
         for (var j = 0; j < itemsList.length; j++) {
-            addLine(itemsList[j], "color2", 100 * (locationsList.length + j + 2));
+            displayMessage(itemsList[j], "color2", 100 * (locationsList.length + j + 2));
         }
     } else {
-        addLine("<br>", "", 100);
+        displayMessage("<br>", "", 100);
     }
 }
 
@@ -210,7 +207,7 @@ function cd(newLocation) {
     if (locations[gameState.location].locations.includes(newLocation)) {
         changeLocation(newLocation);
     } else {
-        addLine("<span class=\"inherit\">" + languageVars.noLocationString + newLocation + ".</span>", "error", 100);
+        displayMessage("<span class=\"inherit\">" + languageVars.noLocationString + newLocation + ".</span>", "error", 100);
     }
 }
 
@@ -219,7 +216,7 @@ function cdUp() {
         var parentLocation = getParentLocation(gameState.location);
         changeLocation(parentLocation, true);
     } else {
-        addLine(languageVars.firstRoomString, "color2", 100);
+        displayMessage(languageVars.firstRoomString, "color2", 100);
     }
 }
 
