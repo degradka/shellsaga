@@ -146,7 +146,6 @@ function addLine(text, style, time, addBreak = false) {
 }
 
 function loopLines(name, style, time) {
-    print(name);
     name.forEach(function(item, index) {
         addLine(item, style, index * time);
     });
