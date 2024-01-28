@@ -38,13 +38,28 @@ var locations = {
     },
     WesternForest: {
         moveMessage: languageVars.westernForestMoveMessage,
-        locations: [],
+        locations: ["SpellCastingAcademy"],
         items: ["Sign", "BackSign"],
     },
     NorthernMeadow: {
         moveMessage: languageVars.northernMeadowMoveMessage,
         locations: [],
         items: [],
+    },
+    SpellCastingAcademy: {
+        moveMessage: languageVars.spellAcademyMoveMessage,
+        locations: ["PracticeRoom", "Lessons"],
+        items: ["HurryingStudent"],
+    },
+    Lessons: {
+        moveMessage: languageVars.lessonsMoveMessage,
+        locations: [],
+        items: ["Professor"],
+    },
+    PracticeRoom: {
+        moveMessage: languageVars.practiceRoomMoveMessage,
+        locations: ["Box"],
+        items: ["Instructions", "PracticeDummy1", "PracticeDummy2", "PracticeDummy3", "PracticeDummy4", "PracticeDummy5"],
     },
 }
 
@@ -57,6 +72,37 @@ var items = {
     },
     BackSign: {
         interactMessage: languageVars.backSignInteractMessage,
+    },
+    HurryingStudent: {
+        interactMessage: languageVars.hurryingStudentInteractMessage,
+    },
+    Professor: {
+        interactMessage: languageVars.professorInteractMessage,
+    },
+    Instructions: {
+        interactMessage: languageVars.academyInstructionsInteractMessage,
+        isMovable: true,
+    },
+    // TODO: These practice dummies shouldn't be hardcoded like that
+    PracticeDummy1: {
+        interactMessage: languageVars.practiceDummyInteractMessage,
+        isMovable: true,
+    },
+    PracticeDummy2: {
+        interactMessage: languageVars.practiceDummyInteractMessage,
+        isMovable: true,
+    },
+    PracticeDummy3: {
+        interactMessage: languageVars.practiceDummyInteractMessage,
+        isMovable: true,
+    },
+    PracticeDummy4: {
+        interactMessage: languageVars.practiceDummyInteractMessage,
+        isMovable: true,
+    },
+    PracticeDummy5: {
+        interactMessage: languageVars.practiceDummyInteractMessage,
+        isMovable: true,
     },
 }
 
@@ -71,6 +117,10 @@ function interactWithItem(itemName) {
         addLine(languageVars.nothingInterestingString, "color2", 0);
     }
     textarea.focus();
+}
+// TODO: Implement handling for 'mv' command
+function isItemMovable(itemName) {
+    return items[itemName]?.isMovable || false;
 }
 
 function handleGameCommand(cmdArray) {
@@ -125,8 +175,12 @@ function handleGameCommand(cmdArray) {
 }
 
 function changeLocation(newLocation) {
-    gameState.location = newLocation;
-    addLine(locations[newLocation].moveMessage, "color2", 100);
+    if (newLocation != "Box") {
+        gameState.location = newLocation;
+        addLine(locations[newLocation].moveMessage, "color2", 100);
+    } else {
+        addLine(languageVars.youreTooBig, "color2", 100);
+    }
 }
 
 function ls() {
