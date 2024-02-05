@@ -28,38 +28,33 @@ const GAME_COMMANDS = {
         args: 0,
         autocomplete: null,
     },
+    MV: {
+        command: 'mv',
+        args: 2,
+        autocomplete: autocompleteItems,
+    },
 };
 
 var locations = {
     Home: {
         moveMessage: languageVars.homeMoveMessage,
-        locations: ["WesternForest", "NorthernMeadow"],
+        locations: ["Garden", "Yard"],
         items: ["WelcomeLetter"],
     },
-    WesternForest: {
-        moveMessage: languageVars.westernForestMoveMessage,
-        locations: ["SpellCastingAcademy"],
-        items: ["Sign", "BackSign"],
+    Garden: {
+        moveMessage: languageVars.gardenMoveMessage,
+        locations: ["Greenhouse"],
+        items: ["Grandma"],
     },
-    NorthernMeadow: {
-        moveMessage: languageVars.northernMeadowMoveMessage,
+    Greenhouse: {
+        moveMessage: languageVars.greenhouseMoveMessage,
+        locations: ["Crate"],
+        items: ["Grandpa", "Potato1", "Potato2", "Potato3"],
+    },
+    Yard: {
+        moveMessage: languageVars.yardMoveMessage,
         locations: [],
         items: [],
-    },
-    SpellCastingAcademy: {
-        moveMessage: languageVars.spellAcademyMoveMessage,
-        locations: ["PracticeRoom", "Lessons"],
-        items: ["HurryingStudent"],
-    },
-    Lessons: {
-        moveMessage: languageVars.lessonsMoveMessage,
-        locations: [],
-        items: ["Professor"],
-    },
-    PracticeRoom: {
-        moveMessage: languageVars.practiceRoomMoveMessage,
-        locations: ["Box"],
-        items: ["Instructions", "PracticeDummy1", "PracticeDummy2", "PracticeDummy3", "PracticeDummy4", "PracticeDummy5"],
     },
 }
 
@@ -67,41 +62,22 @@ var items = {
     WelcomeLetter: {
         interactMessage: languageVars.welcomeLetter,
     },
-    Sign: {
-        interactMessage: languageVars.signInteractMessage,
+    Grandma: {
+        interactMessage: languageVars.grandmaInteractMessage,
     },
-    BackSign: {
-        interactMessage: languageVars.backSignInteractMessage,
+    Grandpa: {
+        interactMessage: languageVars.grandmaInteractMessage,
     },
-    HurryingStudent: {
-        interactMessage: languageVars.hurryingStudentInteractMessage,
-    },
-    Professor: {
-        interactMessage: languageVars.professorInteractMessage,
-    },
-    Instructions: {
-        interactMessage: languageVars.academyInstructionsInteractMessage,
+    Potato1: {
+        interactMessage: languageVars.grandmaInteractMessage,
         isMovable: true,
     },
-    // TODO: These practice dummies shouldn't be hardcoded like that
-    PracticeDummy1: {
-        interactMessage: languageVars.practiceDummyInteractMessage,
+    Potato2: {
+        interactMessage: languageVars.grandmaInteractMessage,
         isMovable: true,
     },
-    PracticeDummy2: {
-        interactMessage: languageVars.practiceDummyInteractMessage,
-        isMovable: true,
-    },
-    PracticeDummy3: {
-        interactMessage: languageVars.practiceDummyInteractMessage,
-        isMovable: true,
-    },
-    PracticeDummy4: {
-        interactMessage: languageVars.practiceDummyInteractMessage,
-        isMovable: true,
-    },
-    PracticeDummy5: {
-        interactMessage: languageVars.practiceDummyInteractMessage,
+    Potato3: {
+        interactMessage: languageVars.grandmaInteractMessage,
         isMovable: true,
     },
 }
@@ -161,6 +137,11 @@ function handleGameCommand(cmdArray) {
         case GAME_COMMANDS.CLEAR.command:
             clearTerminal();
             break;
+        case GAME_COMMANDS.MV.command:
+            if (cmdArray.length < 3) {
+                displayMessage("Нахуй идешь, очкарик");
+            }
+            break;
         default:
             displayMessage("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);
             break;
@@ -177,7 +158,7 @@ function changeLocation(newLocation) {
 }
 
 function isBox(locationName) {
-    return locationName.toLowerCase().includes("box");
+    return locationName.toLowerCase().includes("crate");
 }
 
 function ls() {
