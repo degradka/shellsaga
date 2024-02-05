@@ -22,7 +22,12 @@ function switchLanguage(newLanguage) {
 }
 
 setTimeout(function() {
-    loopLines(languageVars.banner, "", 80);
+    if (window.innerWidth < 1018) {
+        loopLines(languageVars.mobileBanner, "", 80);
+    } else {
+        loopLines(languageVars.banner, "", 80);
+    }
+    
     textarea.focus();
 }, 100);
 
@@ -46,7 +51,7 @@ function enterKey(e) {
         var cmdArray = command.innerHTML.split(' ');
 
         git = commands.length;
-        addLine("player@degradka.dev:~$ " + command.innerHTML, "no-animation", 0);
+        addLine("> " + command.innerHTML, "no-animation", 0);
         commander(cmdArray)
         command.innerHTML = "";
         textarea.value = "";
@@ -157,4 +162,19 @@ function displayMessage(message, style, time) {
     } else {
         addLine(message, style, time);
     }
+}
+
+function updateImage() {
+    var location = gameState.location;
+    var imagePath = 'levelshots/' + location.toLowerCase() + '.jpg';
+    var dynamicImage = document.getElementById('dynamic-image');
+    
+    dynamicImage.src = imagePath;
+}
+
+function hideImage() {
+    var imagePath = 'levelshots/none.jpg';
+    var dynamicImage = document.getElementById('dynamic-image');
+    
+    dynamicImage.src = imagePath;
 }

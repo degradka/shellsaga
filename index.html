@@ -11,16 +11,25 @@
 </head>
 
 <body>
-    <div id="terminal"> <a id="before"></a> </div>
-    <div id="command" onclick="$('texter').focus();"> <textarea type="text" id="texter" onkeyup="typeIt(this, event)" onkeydown="typeIt(this, event); 
-        moveIt(this.value.length, event)" onkeypress="typeIt(this, event);" autofocus></textarea>
-        <div id="liner"> <span id="typer"></span><b class="cursor" id="cursor">█</b> </div>
+    <div id="terminal-container">
+        <a id="before"></a>
+        <div id="command" onclick="$('texter').focus();">
+            <textarea type="text" id="texter" onkeyup="typeIt(this, event)" onkeydown="typeIt(this, event);
+                moveIt(this.value.length, event)" onkeypress="typeIt(this, event);" autofocus></textarea>
+            <div id="liner">
+                <span id="typer"></span><b class="cursor" id="cursor">█</b>
+            </div>
+        </div>
     </div>
+    <div id="image-container">
+        <img id="dynamic-image" src="levelshots/none.jpg" alt="Dynamic Image">
+    </div>    
     <script src="js/gamevars_en.js"></script>
     <script src="js/gamevars_ru.js"></script>
     <script src="js/caret.js"></script>
     <script src="js/main.js"></script>
     <script src="js/game.js"></script>
 </body>
+
 
 </html>

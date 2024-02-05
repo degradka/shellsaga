@@ -1,7 +1,7 @@
 var gameState = {
     location: "Home"
 };
-// TODO: Make so if user types gibberish, pass it as a command and output default string
+
 const GAME_COMMANDS = {
     LESS: {
         command: 'less',
@@ -28,11 +28,10 @@ const GAME_COMMANDS = {
         args: 0,
         autocomplete: null,
     },
-    // TODO: Add autocompletion for mv
     MV: {
         command: 'mv',
         args: 2,
-        autocomplete: autocompleteItems,
+        autocomplete: autocompleteMv,
     },
 };
 
@@ -98,42 +97,6 @@ function interactWithItem(itemName) {
         displayMessage(languageVars.nothingInterestingString, "color2", 0);
     }
     textarea.focus();
-}
-
-function handleTask(taskName) {
-    switch (taskName) {
-        case "potatoCrateTask":
-            handlePotatoCrateTask();
-            break;
-        default:
-            break;
-    }
-}
-
-function handlePotatoCrateTask() {
-    if (!gameState.tasks || !gameState.tasks.potatoCrateTask) {
-        displayMessage(languageVars.grandpaInteractMessageTask, "color2", 100);
-        gameState.tasks = { ...gameState.tasks, potatoCrateTask: "started" };
-    } else {
-        if (
-            locations["Crate"].items.includes("Potato1") &&
-            locations["Crate"].items.includes("Potato2") &&
-            locations["Crate"].items.includes("Potato3")
-        ) {
-            if (!gameState.tasks.potatoCrateTaskCompleted) {
-                displayMessage(languageVars.grandpaInteractMessageThanks, "color2", 100);
-                gameState.tasks = { ...gameState.tasks, potatoCrateTask: "completed", potatoCrateTaskCompleted: true };
-            } else {
-                displayMessage(languageVars.grandpaInteractMessageDone, "color2", 100);
-            }
-        } else {
-            displayMessage(languageVars.grandpaInteractMessageReminder, "color2", 100);
-        }
-    }
-}
-
-function isItemMovable(itemName) {
-    return items[itemName]?.isMovable || false;
 }
 
 function handleGameCommand(cmdArray) {
@@ -214,6 +177,7 @@ function changeLocation(newLocation) {
     } else {
         gameState.location = newLocation;
         displayMessage(locations[newLocation].moveMessage, "color2", 100);
+        hideImage();
     }
 }
 
@@ -242,6 +206,8 @@ function ls() {
     } else {
         displayMessage("<br>", "", 100);
     }
+
+    updateImage();
 }
 
 function cd(newLocation) {
@@ -272,14 +238,50 @@ function getParentLocation(location) {
 
 // I understand that this implementation will haunt me in my nightmares
 
+function findCommonPrefix(items) {
+    var commonPrefix = '';
+    var minLength = Math.min(...items.map(item => item.length));
+
+    for (var i = 0; i < minLength; i++) {
+        if (items.every(item => item[i] === items[0][i])) {
+            commonPrefix += items[0][i];
+        } else {
+            break;
+        }
+    }
+
+    return commonPrefix;
+}
+
 function autocompleteLocations(prefix) {
     var allLocations = locations[gameState.location].locations;
-    return allLocations.filter(location => location.startsWith(prefix));
+    var matchingLocations = allLocations.filter(location => location.startsWith(prefix));
+
+    if (matchingLocations.length > 1) {
+        var commonPrefix = findCommonPrefix(matchingLocations);
+        return [commonPrefix];
+    }
+
+    return matchingLocations;
 }
 
 function autocompleteItems(prefix) {
     var allItems = locations[gameState.location].items;
-    return allItems.filter(item => item.startsWith(prefix));
+    var matchingItems = allItems.filter(item => item.startsWith(prefix));
+
+    if (matchingItems.length > 1) {
+        var commonPrefix = findCommonPrefix(matchingItems);
+        return [commonPrefix];
+    }
+
+    return matchingItems;
+}
+
+function autocompleteMv(prefix) {
+    var itemSuggestions = autocompleteItems(prefix);
+    var locationSuggestions = autocompleteLocations(prefix);
+
+    return itemSuggestions.concat(locationSuggestions);
 }
 
 function findMatchingGameCommand(prefix) {
@@ -307,6 +309,43 @@ function handleGameCommandAutocompletion() {
                     textarea.value = autocompletedCommand;
                 }
             }
+        }
+    }
+}
+
+
+function isItemMovable(itemName) {
+    return items[itemName]?.isMovable || false;
+}
+
+function handleTask(taskName) {
+    switch (taskName) {
+        case "potatoCrateTask":
+            handlePotatoCrateTask();
+            break;
+        default:
+            break;
+    }
+}
+
+function handlePotatoCrateTask() {
+    if (!gameState.tasks || !gameState.tasks.potatoCrateTask) {
+        displayMessage(languageVars.grandpaInteractMessageTask, "color2", 100);
+        gameState.tasks = { ...gameState.tasks, potatoCrateTask: "started" };
+    } else {
+        if (
+            locations["Crate"].items.includes("Potato1") &&
+            locations["Crate"].items.includes("Potato2") &&
+            locations["Crate"].items.includes("Potato3")
+        ) {
+            if (!gameState.tasks.potatoCrateTaskCompleted) {
+                displayMessage(languageVars.grandpaInteractMessageThanks, "color2", 100);
+                gameState.tasks = { ...gameState.tasks, potatoCrateTask: "completed", potatoCrateTaskCompleted: true };
+            } else {
+                displayMessage(languageVars.grandpaInteractMessageDone, "color2", 100);
+            }
+        } else {
+            displayMessage(languageVars.grandpaInteractMessageReminder, "color2", 100);
         }
     }
 }

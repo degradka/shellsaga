@@ -1,6 +1,6 @@
 var gamevars_en = {
     banner: [
-        '<span class="index">© ShellSaga, All rights reserved.</span>',
+        '<span class="index">© 2024 ShellSaga, All rights reserved.</span>',
         "   _____            _ _ _____                   ",
         "  /  ___| |        | | /  ___|                  ",
         "  \\ `--.| |__   ___| | \\ `--.  __ _  __ _  __ _ ",
@@ -10,6 +10,10 @@ var gamevars_en = {
         "                                     __/ |      ",
         "                                    |___/       ",
         "                                          © 2024",
+    ],
+    mobileBanner: [
+        '<span class="index">© 2024 ShellSaga, All rights reserved.</span>',
+        "<br>",
     ],
     welcomeLetter: [
         'Welcome! If you are new to the game, here are some tips: ',
