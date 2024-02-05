@@ -28,6 +28,7 @@ const GAME_COMMANDS = {
         args: 0,
         autocomplete: null,
     },
+    // TODO: Add autocompletion for mv
     MV: {
         command: 'mv',
         args: 2,
@@ -51,6 +52,9 @@ var locations = {
         locations: ["Crate"],
         items: ["Grandpa", "Potato1", "Potato2", "Potato3"],
     },
+    Crate: {
+        items: [""],
+    },
     Yard: {
         moveMessage: languageVars.yardMoveMessage,
         locations: [],
@@ -66,31 +70,68 @@ var items = {
         interactMessage: languageVars.grandmaInteractMessage,
     },
     Grandpa: {
-        interactMessage: languageVars.grandmaInteractMessage,
+        interactMessage: languageVars.grandpaInteractMessageTask,
+        task: "potatoCrateTask",
     },
     Potato1: {
-        interactMessage: languageVars.grandmaInteractMessage,
+        interactMessage: languageVars.potatoMessage,
         isMovable: true,
     },
     Potato2: {
-        interactMessage: languageVars.grandmaInteractMessage,
+        interactMessage: languageVars.potatoMessage,
         isMovable: true,
     },
     Potato3: {
-        interactMessage: languageVars.grandmaInteractMessage,
+        interactMessage: languageVars.potatoMessage,
         isMovable: true,
     },
 }
 
 function interactWithItem(itemName) {
     if (locations[gameState.location].items.includes(itemName)) {
-        displayMessage(items[itemName].interactMessage, "color2", 80);
+        if (items[itemName].task) {
+            handleTask(items[itemName].task);
+        } else {
+            displayMessage(items[itemName].interactMessage, "color2", 80);
+        }
     } else {
         displayMessage(languageVars.nothingInterestingString, "color2", 0);
     }
     textarea.focus();
 }
-// TODO: Implement handling for 'mv' command
+
+function handleTask(taskName) {
+    switch (taskName) {
+        case "potatoCrateTask":
+            handlePotatoCrateTask();
+            break;
+        default:
+            break;
+    }
+}
+
+function handlePotatoCrateTask() {
+    if (!gameState.tasks || !gameState.tasks.potatoCrateTask) {
+        displayMessage(languageVars.grandpaInteractMessageTask, "color2", 100);
+        gameState.tasks = { ...gameState.tasks, potatoCrateTask: "started" };
+    } else {
+        if (
+            locations["Crate"].items.includes("Potato1") &&
+            locations["Crate"].items.includes("Potato2") &&
+            locations["Crate"].items.includes("Potato3")
+        ) {
+            if (!gameState.tasks.potatoCrateTaskCompleted) {
+                displayMessage(languageVars.grandpaInteractMessageThanks, "color2", 100);
+                gameState.tasks = { ...gameState.tasks, potatoCrateTask: "completed", potatoCrateTaskCompleted: true };
+            } else {
+                displayMessage(languageVars.grandpaInteractMessageDone, "color2", 100);
+            }
+        } else {
+            displayMessage(languageVars.grandpaInteractMessageReminder, "color2", 100);
+        }
+    }
+}
+
 function isItemMovable(itemName) {
     return items[itemName]?.isMovable || false;
 }
@@ -139,7 +180,20 @@ function handleGameCommand(cmdArray) {
             break;
         case GAME_COMMANDS.MV.command:
             if (cmdArray.length < 3) {
-                displayMessage("Нахуй идешь, очкарик");
+                displayMessage("<span class=\"inherit\">" + languageVars.moveErrorString + "</span>", "error", 100);
+            } else {
+                var itemName = cmdArray[1];
+                var locationName = cmdArray[2];
+                if (locations[gameState.location].items.includes(itemName) && locations[gameState.location].locations.includes(locationName)) {
+                    if (isItemMovable(itemName)) {
+                        moveItem(itemName, locationName);
+                        break;
+                    } else {
+                        displayMessage("<span class=\"inherit\">" + languageVars.mustBeValidString + "</span>", "error", 100);
+                    }
+                } else {
+                    displayMessage("<span class=\"inherit\">" + languageVars.mustBeValidString + "</span>", "error", 100);
+                }
             }
             break;
         default:
@@ -148,8 +202,14 @@ function handleGameCommand(cmdArray) {
     }
 }
 
+function moveItem(itemName, locationName) {
+    locations[gameState.location].items = locations[gameState.location].items.filter(item => item !== itemName);
+    locations[locationName].items.push(itemName);
+    displayMessage(languageVars.moveString + itemName + languageVars.toString + locationName + ".", "color2", 100);
+}
+
 function changeLocation(newLocation) {
-    if (isBox(newLocation)) {
+    if (isTooSmall(newLocation)) {
         displayMessage(languageVars.youreTooBig, "color2", 100);
     } else {
         gameState.location = newLocation;
@@ -157,7 +217,7 @@ function changeLocation(newLocation) {
     }
 }
 
-function isBox(locationName) {
+function isTooSmall(locationName) {
     return locationName.toLowerCase().includes("crate");
 }
 

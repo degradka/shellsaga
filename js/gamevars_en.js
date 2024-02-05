@@ -37,11 +37,53 @@ var gamevars_en = {
     hereString: " here",
     noLessString: "Pick a different item to less.",
     nothingInterestingString: "Nothing interesting happens.",
+    moveErrorString: "You need to move thing A to place B. Use mv [thingA] [placeB].",
+    mustBeValidString: "Must be a valid item and location to move it.",
+    moveString: "Moved ",
+    toString: " to ",
+    youreTooBig: "You're too big to fit in there.",
     gardenMoveMessage: [
-        "You have moved to WesternForest. You enter and travel deep into the forest. Eventually, the path leads to a",
-        "clearing with a large impressive building. A sign on it reads: Spell Casting Academy: The Elite School of",
-        "Magic.",
+        "As you step into the garden, you're greeted by the soothing scent",
+        "of blooming flowers. Grandma is diligently tending to the plants,",
+        "her weathered hands carefully nurturing each one. The vibrant",
+        "colors of the flora contrast with the rustic charm of the surroundings.",
+        "Beyond Grandma, you notice a pathway leading to the greenhouse,",
+        "promising secrets of nature within its glass walls."
     ],
-    yardMoveMessage: "The serene Northern Meadow welcomes you.",
-    grandmaInteractMessage: "I'm busy grandson, go help your grandpa in the greenhouse.",
+    yardMoveMessage: "You're in the yard.",
+    grandmaInteractMessage: [
+        "Grandma looks up from her work with a warm smile,",
+        "her eyes crinkling at the corners. She gently pats your shoulder",
+        "and says, 'I'm busy, my dear grandson. Go and help your grandpa",
+        "in the greenhouse. He might have a task for you.'"
+    ],    
+    greenhouseMoveMessage: [
+        "As you step into the greenhouse, a wave of warmth and humidity envelops you.",
+        "Rows of thriving plants stretch out in front of you, their leaves glistening",
+        "with dewdrops. Grandpa is carefully inspecting each plant, a pair of pruning",
+        "shears in his hands. The air is filled with the earthy aroma of soil and the",
+        "sweet scent of blossoming flowers. A workbench is cluttered with gardening tools",
+        "and seed packets. There's a sense of growth and life in this small, green sanctuary."
+    ],
+    potatoMessage: "It's a potato.",
+    grandpaInteractMessageTask: [
+        "Grandpa looks up from his gardening, his eyes twinkling with anticipation.",
+        "'Ah, my clever grandson! I have a task for you,' he exclaims.",
+        "'You see those potatoes over there - Potato1, Potato2, and Potato3?'",
+        "'I need you to move each of them into the Crate using the command <span class=\"command\">mv [potato] Crate</span>.'",
+        "'Give it a try, and let me know when you're done.'"
+    ],
+    grandpaInteractMessageReminder: [
+        "Grandpa looks around, a gentle frown appearing on his face.",
+        "'You're doing well, my dear, but there are still some potatoes",
+        "that need to find their way into the Crate. Remember to use",
+        "the <span class=\"command\">mv [potato] Crate</span> command for each one.'"
+    ],
+    grandpaInteractMessageThanks: [
+        "As you successfully move the last potato into the Crate,",
+        "Grandpa's face lights up with satisfaction. 'Thank you, my",
+        "industrious grandson! Now I can continue my work with ease.'",
+        "He gives you a grateful nod and returns to his gardening tasks."
+    ],
+    grandpaInteractMessageDone: "You did well with the potatoes, thank you!",
 };
