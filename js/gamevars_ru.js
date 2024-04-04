@@ -11,6 +11,10 @@ var gamevars_ru = {
         "                                    |___/       ",
         "                                          © 2024",
     ],
+    mobileBanner: [
+        '<span class="index">© ShellSaga, Все права защищены.</span>',
+        "<br>",
+    ],
     welcomeLetter: [
         'Добро пожаловать! Если вы новичок в игре, вот несколько советов:',
         "<br>",
@@ -37,4 +41,9 @@ var gamevars_ru = {
     hereString: " здесь",
     noLessString: "Выберите другой предмет для осмотра.",
     nothingInterestingString: "Ничего интересного не происходит.",
+    moveErrorString: "Нужно передвинуть вещь А в вещь Б. Используйте mv [вещьA] [вещьБ].",
+    mustBeValidString: "Должен быть существующей вещью или местом для передвижения.",
+    moveString: "Передвинул ",
+    toString: " в ",
+    youreTooBig: "Вы слишком велики, что бы вместиться сюда.",
 };
