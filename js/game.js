@@ -160,7 +160,9 @@ function handleGameCommand(cmdArray) {
             }
             break;
         default:
-            displayMessage("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);
+            if (cmd != "") {
+                displayMessage("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);
+            }
             break;
     }
 }
