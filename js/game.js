@@ -56,6 +56,38 @@ var locations = {
     },
     Yard: {
         moveMessage: languageVars.yardMoveMessage,
+        locations: ["Forest", "Road"],
+        items: [],
+    },
+    Road: {
+        moveMessage: languageVars.roadMoveMessage,
+        locations: ["Store", "SmallField"],
+        items: ["Sign"],
+    },
+    Store: {
+        // Quest: help trader move the tomatos
+        moveMessage: languageVars.storeMoveMessage,
+        locations: [],
+        items: [],
+    },
+    SmallField: {
+        moveMessage: languageVars.fieldMoveMessage,
+        locations: ["Highway"],
+        items: ["Dog"],
+    },
+    Highway: {
+        moveMessage: languageVars.highwayMoveMessage,
+        locations: ["BusStop"],
+        items: [],
+    },
+    BusStop: {
+        moveMessage: languageVars.busStopMoveMessage,
+        locations: [],
+        items: ["OldMan"],
+    },
+    Forest: {
+        // FINISH THIS ASAP
+        moveMessage: languageVars.forestMoveMessage,
         locations: [],
         items: [],
     },
@@ -83,6 +115,15 @@ var items = {
     Potato3: {
         interactMessage: languageVars.potatoMessage,
         isMovable: true,
+    },
+    Sign: {
+        interactMessage: languageVars.roadSign,
+    },
+    Dog: {
+        interactMessage: languageVars.dog,
+    },
+    OldMan: {
+        interactMessage: languageVars.oldManInteractMessage,
     },
 }
 
@@ -159,6 +200,10 @@ function handleGameCommand(cmdArray) {
                 }
             }
             break;
+        case GAME_COMMANDS.RM.command:
+            if (cmdArray.length < 2) {
+                displayMessage("динах");
+            }
         default:
             if (cmd != "") {
                 displayMessage("<span class=\"inherit\">" + languageVars.commandString + " '<span class=\"command\">" + cmd + "</span>' " + languageVars.notFoundString + ".</span>", "error", 100);

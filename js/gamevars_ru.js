@@ -90,4 +90,30 @@ var gamevars_ru = {
         "Он благодарно кивает вам и возвращается к садоводческим делам."
     ],
     grandpaInteractMessageDone: "Ты хорошо справился с картошками, спасибо!",
+    roadSign: [
+        "Магазин - 200м",
+        "Шоссе - 1км",
+    ],
+    roadMoveMessage: [
+        // I'm hella tired rn, good description will come tomorrow (i hope)
+        "Вы передвигаетесь на дорогу и видите табличку.",
+    ],
+    storeMoveMessage: [
+        "Вы в магазине.",
+    ],
+    fieldMoveMessage: [
+        "Вы на поле. В траве лежит собака.",
+    ],
+    dog: [
+        "Очень милое описание собаки.",
+    ],
+    highwayMoveMessage: [
+        "Выйдя с поля, вы попадаете на шоссе. Недалеко виднеется автобусная остановка.",
+    ],
+    busStopMoveMessage: [
+        "Вы на автобусной остановке. Помимо вас, рядом стоит старый мужчина.",
+    ],
+    oldManInteractMessage: [
+        "Знаешь... Ты можешь испепелять людей командой <span class=\"command\">rm [предмет]</span>...",
+    ],
 };
