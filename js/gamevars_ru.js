@@ -116,4 +116,22 @@ var gamevars_ru = {
     oldManInteractMessage: [
         "Знаешь... Ты можешь испепелять людей командой <span class=\"command\">rm [предмет]</span>...",
     ],
+    traderInteractMessageTask: [
+        "Молодой человек! Помогите мне разложить помидоры по полкам.",
+    ],
+    removeString: [
+        "Вы стерли ",
+    ],
+    removeEndString: [
+        " с лица земли.",
+    ],
+    forestPathMoveMessage: [
+        "Вы выходите на тропу к лесу, но вход в лес преграждают молодые люди неприятного лица.",
+    ],
+    bullyMessage: [
+        "Ты не пройдешь в лес!",
+    ],
+    forestMoveMessage: [
+        "С облегчением, вы входите в лес.",
+    ],
 };

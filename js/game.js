@@ -33,6 +33,11 @@ const GAME_COMMANDS = {
         args: 2,
         autocomplete: autocompleteMv,
     },
+    RM: {
+        command: 'rm',
+        args: 1,
+        autocomplete: null, // TODO: Add autocomp for rm command
+    }
 };
 
 var locations = {
@@ -56,7 +61,7 @@ var locations = {
     },
     Yard: {
         moveMessage: languageVars.yardMoveMessage,
-        locations: ["Forest", "Road"],
+        locations: ["Road", "PathToForest"],
         items: [],
     },
     Road: {
@@ -85,12 +90,21 @@ var locations = {
         locations: [],
         items: ["OldMan"],
     },
+    PathToForest: {
+        moveMessage: languageVars.forestPathMoveMessage,
+        locations: ["Forest"],
+        items: ["Bully1", "Bully2"],
+    },
     Forest: {
-        // FINISH THIS ASAP
         moveMessage: languageVars.forestMoveMessage,
-        locations: [],
+        locations: ["River"],
         items: [],
     },
+    River: {
+        moveMessage: languageVars.riverMoveMessage,
+        locations: ["Bridge", "LargeField"],
+        items: [],
+    }
 }
 
 var items = {
@@ -124,6 +138,18 @@ var items = {
     },
     OldMan: {
         interactMessage: languageVars.oldManInteractMessage,
+    },
+    Trader: {
+        interactMessage: languageVars.traderInteractMessageTask,
+        task: "tomatoHelpTask" // TODO: implement the actual task?
+    },
+    Bully1: {
+        interactMessage: languageVars.bullyMessage,
+        isRemovable: true,
+    },
+    Bully2: {
+        interactMessage: languageVars.bullyMessage,
+        isRemovable: true,
     },
 }
 
@@ -174,6 +200,13 @@ function handleGameCommand(cmdArray) {
                 } else if (cmdArray[1] == "~") {
                     gameState.location = "Home";
                     displayMessage(languageVars.rootString, "color2", 100);
+                } else if (cmdArray[1] == "Forest" && gameState.location == "PathToForest") {
+                    var bulliesAlive = locations["PathToForest"].items.includes("Bully1") || locations["PathToForest"].items.includes("Bully2");
+                    if (bulliesAlive) {
+                        displayMessage(languageVars.bullyMessage, "color2", 100);
+                    } else {
+                        cd(cmdArray[1]);
+                    }
                 } else {
                     cd(cmdArray[1]);
                 }
@@ -203,6 +236,16 @@ function handleGameCommand(cmdArray) {
         case GAME_COMMANDS.RM.command:
             if (cmdArray.length < 2) {
                 displayMessage("динах");
+            } else {
+                var itemName = cmdArray[1];
+                if (locations[gameState.location].items.includes(itemName)) {
+                    if (isItemRemovable(itemName)) {
+                        removeItem(itemName);
+                        break;
+                    } else {
+                        displayMessage("<span class=\"inherit\">динах2</span>", "error", 100);
+                    }
+                }
             }
         default:
             if (cmd != "") {
@@ -216,6 +259,11 @@ function moveItem(itemName, locationName) {
     locations[gameState.location].items = locations[gameState.location].items.filter(item => item !== itemName);
     locations[locationName].items.push(itemName);
     displayMessage(languageVars.moveString + itemName + languageVars.toString + locationName + ".", "color2", 100);
+}
+
+function removeItem(itemName) {
+    locations[gameState.location].items = locations[gameState.location].items.filter(item => item !== itemName);
+    displayMessage(languageVars.removeString + itemName + languageVars.removeEndString, "color2", 100);
 }
 
 function changeLocation(newLocation) {
@@ -268,7 +316,11 @@ function cd(newLocation) {
 function cdUp() {
     if (gameState.location !== "Home") {
         var parentLocation = getParentLocation(gameState.location);
-        changeLocation(parentLocation, true);
+        if (parentLocation) {
+            changeLocation(parentLocation, true);
+        } else {
+            displayMessage("Can't go further up from here.", "error", 100); // No idea why you can't go up from Road or PathToForest, god have mercy
+        }
     } else {
         displayMessage(languageVars.firstRoomString, "color2", 100);
     }
@@ -360,9 +412,12 @@ function handleGameCommandAutocompletion() {
     }
 }
 
-
 function isItemMovable(itemName) {
     return items[itemName]?.isMovable || false;
+}
+
+function isItemRemovable(itemName) {
+    return items[itemName]?.isRemovable || false;
 }
 
 function handleTask(taskName) {
