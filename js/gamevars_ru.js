@@ -134,4 +134,17 @@ var gamevars_ru = {
     forestMoveMessage: [
         "С облегчением, вы входите в лес.",
     ],
+    riverMoveMessage: [
+        "А у реки, а у реки, а у реки",
+        "Гуляют девки, гуляют мужики...",
+    ],
+    largeFieldMoveMessage: [
+        "Чисто поле и никого!",
+    ],
+    kanavaMoveMessage: [
+        "Канава с бомжом."
+    ],
+    bridgeMoveMessage: [
+        "Похоже мост сломан. Была бы только возможность его починить..."
+    ],
 };

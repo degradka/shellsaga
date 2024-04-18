@@ -104,7 +104,23 @@ var locations = {
         moveMessage: languageVars.riverMoveMessage,
         locations: ["Bridge", "LargeField"],
         items: [],
-    }
+    },
+    LargeField: {
+        moveMessage: languageVars.largeFieldMoveMessage,
+        locations: ["Trench"],
+        items: [],
+    },
+    Trench: {
+        moveMessage: languageVars.kanavaMoveMessage,
+        locations: [""],
+        // IMPLEMENT THE MOONSHINE QUEST
+        items: ["HomelessMan"],
+    },
+    Bridge: {
+        moveMessage: languageVars.bridgeMoveMessage,
+        locations: [],
+        items: [],
+    },
 }
 
 var items = {
@@ -320,6 +336,7 @@ function cdUp() {
             changeLocation(parentLocation, true);
         } else {
             displayMessage("Can't go further up from here.", "error", 100); // No idea why you can't go up from Road or PathToForest, god have mercy
+                                                                            // UPD: Meh, it doesn't trigger this else case, only errors in console
         }
     } else {
         displayMessage(languageVars.firstRoomString, "color2", 100);
